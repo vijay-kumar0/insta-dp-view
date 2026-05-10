@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Instaview — HD Profile Viewer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Background ambient blobs -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ─── Navbar ─────────────────────────────────── -->
+  <nav class="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav-inner">
+      <a class="nav-logo" href="#" aria-label="Instaview home">
+        <span class="logo-icon" aria-hidden="true">◈</span>
+        <span class="logo-text">Instaview</span>
+      </a>
+      <div class="nav-badge">HD Viewer</div>
+    </div>
+  </nav>
+
+  <!-- ─── Main Content ───────────────────────────── -->
+  <main>
+
+    <!-- Hero -->
+    <section class="hero" aria-labelledby="hero-heading">
+      <div class="hero-inner">
+        <p class="hero-eyebrow reveal">Free · Instant · HD</p>
+        <h1 class="hero-title reveal" id="hero-heading">
+          View Any Instagram<br />
+          <span class="gradient-text">Profile Picture</span><br />
+          in Full HD
+        </h1>
+        <p class="hero-sub reveal">Enter a public username and instantly preview &amp; download their profile photo at maximum resolution — no login required.</p>
+      </div>
+    </section>
+
+    <!-- Search Card -->
+    <section class="search-section reveal" aria-label="Search">
+      <div class="glass-card search-card">
+
+        <div class="search-header">
+          <span class="search-label">Username</span>
+          <span class="search-hint">Public accounts only</span>
+        </div>
+
+        <div class="input-wrap">
+          <span class="input-at" aria-hidden="true">@</span>
+          <input
+            type="text"
+            id="usernameInput"
+            class="username-input"
+            placeholder="username"
+            autocomplete="off"
+            autocorrect="off"
+            autocapitalize="none"
+            spellcheck="false"
+            aria-label="Instagram username"
+          />
+          <button class="clear-btn" id="clearInput" aria-label="Clear input" title="Clear" style="display:none">✕</button>
+        </div>
+
+        <button class="cta-btn" id="viewBtn" aria-label="View profile picture">
+          <span class="btn-text">View Profile Picture</span>
+          <span class="btn-ripple" aria-hidden="true"></span>
+        </button>
+
+        <!-- Error message -->
+        <div class="error-msg" id="errorMsg" role="alert" aria-live="polite"></div>
+
+      </div>
+    </section>
+
+    <!-- History -->
+    <section class="history-section" id="historySection" aria-label="Search history" style="display:none">
+      <div class="history-inner">
+        <div class="history-top">
+          <span class="history-title">Recent Searches</span>
+          <button class="clear-history-btn" id="clearHistory" aria-label="Clear all search history">Clear all</button>
+        </div>
+        <div class="history-chips" id="historyChips" role="list" aria-label="Recently searched usernames"></div>
+      </div>
+    </section>
+
+    <!-- Result -->
+    <section class="result-section" id="resultSection" aria-label="Profile picture result" style="display:none">
+      <div class="glass-card result-card">
+
+        <!-- Skeleton -->
+        <div class="skeleton-wrap" id="skeleton" aria-hidden="true">
+          <div class="skeleton skeleton-avatar"></div>
+          <div class="skeleton-lines">
+            <div class="skeleton skeleton-line short"></div>
+            <div class="skeleton skeleton-line long"></div>
+            <div class="skeleton skeleton-line medium"></div>
+          </div>
+        </div>
+
+        <!-- Actual result -->
+        <div class="result-content" id="resultContent" style="display:none">
+          <div class="profile-preview">
+            <div class="avatar-ring">
+              <img
+                id="profileImg"
+                class="profile-img"
+                src=""
+                alt="Instagram profile picture"
+                loading="lazy"
+                decoding="async"
+              />
+              <div class="avatar-glow" aria-hidden="true"></div>
+            </div>
+            <div class="profile-info">
+              <p class="profile-username" id="resultUsername"></p>
+              <p class="profile-meta">Instagram Profile Picture</p>
+              <div class="quality-badge" aria-label="HD quality">
+                <span>◈</span> HD Quality
+              </div>
+            </div>
+          </div>
+
+          <div class="action-row">
+            <button class="action-btn primary-action" id="downloadBtn" aria-label="Download profile picture">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Download HD
+            </button>
+            <button class="action-btn ghost-action" id="fullscreenBtn" aria-label="View in fullscreen">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3"/></svg>
+              Fullscreen
+            </button>
+            <button class="action-btn ghost-action icon-only" id="copyBtn" aria-label="Copy image URL" title="Copy link">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+            </button>
+          </div>
+
+          <div class="copy-feedback" id="copyFeedback" aria-live="polite"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="steps-section reveal" aria-labelledby="steps-heading">
+      <h2 class="section-heading" id="steps-heading">How It Works</h2>
+      <div class="steps-grid">
+        <div class="step-card glass-card reveal">
+          <div class="step-num" aria-hidden="true">01</div>
+          <h3 class="step-title">Enter Username</h3>
+          <p class="step-desc">Type any public Instagram username in the search field above.</p>
+        </div>
+        <div class="step-card glass-card reveal">
+          <div class="step-num" aria-hidden="true">02</div>
+          <h3 class="step-title">Instant Fetch</h3>
+          <p class="step-desc">Our server fetches the full-resolution profile picture in seconds.</p>
+        </div>
+        <div class="step-card glass-card reveal">
+          <div class="step-num" aria-hidden="true">03</div>
+          <h3 class="step-title">View &amp; Download</h3>
+          <p class="step-desc">Preview in fullscreen or download the HD image directly.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ─── Footer ─────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner">
+      <span class="footer-logo">◈ Instaview</span>
+      <p class="footer-note">For public profiles only. Respects Instagram's Terms of Service.</p>
+    </div>
+  </footer>
+
+  <!-- ─── Fullscreen Modal ───────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-label="Fullscreen image viewer" tabindex="-1" style="display:none">
+    <div class="modal-inner">
+      <button class="modal-close" id="modalClose" aria-label="Close fullscreen viewer">✕</button>
+      <div class="modal-img-wrap">
+        <img id="modalImg" src="" alt="Profile picture fullscreen" class="modal-img" loading="lazy" />
+        <div class="modal-glow" aria-hidden="true"></div>
+      </div>
+      <p class="modal-username" id="modalUsername"></p>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+# netlify.toml
+# Netlify ko batata hai functions kahan hain aur routing kaise karni hai
+
+[build]
+  publish = "."                        # index.html yahan hai
+  functions = "netlify/functions"      # serverless functions yahan hain
+
+# /user/:username  →  Netlify Function par redirect
+[[redirects]]
+  from   = "/user/:username"
+  to     = "/.netlify/functions/user?username=:username"
+  status = 200
+
+# Baaki sab index.html par
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
