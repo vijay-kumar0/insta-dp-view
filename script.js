@@ -139,7 +139,7 @@ async function fetchDP() {
   showResultSkeleton();
 
   try {
-    const response = await fetch(`${API_BASE}/user/${encodeURIComponent(username)}`, {
+    const response = await fetch(`/.netlify/functiond/user?username=${encodeURIComponent(username)}`, {
       method: 'GET',
       headers: { 'Accept': 'application/json' },
       signal: AbortSignal.timeout(12000)          // 12-second timeout
